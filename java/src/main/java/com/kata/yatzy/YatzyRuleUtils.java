@@ -157,16 +157,16 @@ public class YatzyRuleUtils {
     /**
      * Count the number of occurrence for each face of dice
      *
-     * @param dice five six-sided dice
+     * @param dice many six-sided dice
      * @return an array with occurrence for each face of dice
      */
     private static int[] getCounts(int... dice) {
-        if (dice.length != 5) {
-            throw new IllegalArgumentException("Can't role more or less than 5 dice");
-        }
         int[] counts = new int[6];
-        for (int die : dice) {
-            counts[die - 1]++;
+        for (int oneDice : dice) {
+            if (oneDice > 6) {
+                throw new IllegalArgumentException("It's not a valid dice");
+            }
+            counts[oneDice - 1]++;
         }
         return counts;
     }
@@ -186,6 +186,13 @@ public class YatzyRuleUtils {
         return 0;
     }
 
+    /**
+     * Search if there are 5 consecutive faces of dice
+     *
+     * @param indexStart index to start the search
+     * @param counts     an array with occurrence for each face of dice
+     * @return true if they are 5 consecutive faces of dice
+     */
     private static boolean hasTheSameOccurrence(int indexStart, int[] counts) {
         int indexEnd = indexStart + 4 > counts.length ? counts.length : indexStart + 4;
         for (int i = indexStart; i < indexEnd; i++) {
