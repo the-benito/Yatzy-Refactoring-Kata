@@ -110,7 +110,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int smallStraight(int... dice) {
-        return chance(dice) == 15 ? 15 : 0;
+        int[] counts = getCounts(dice);
+        return hasTheSameOccurrence(0, counts) ? 15 : 0;
     }
 
     /**
@@ -120,7 +121,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int largeStraight(int... dice) {
-        return chance(dice) == 20 ? 20 : 0;
+        int[] counts = getCounts(dice);
+        return hasTheSameOccurrence(1, counts) ? 20 : 0;
     }
 
     /**
@@ -182,6 +184,16 @@ public class YatzyRuleUtils {
                 return (i + 1) * occurrence;
         }
         return 0;
+    }
+
+    private static boolean hasTheSameOccurrence(int indexStart, int[] counts) {
+        int indexEnd = indexStart + 4 > counts.length ? counts.length : indexStart + 4;
+        for (int i = indexStart; i < indexEnd; i++) {
+            if (counts[i] != 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

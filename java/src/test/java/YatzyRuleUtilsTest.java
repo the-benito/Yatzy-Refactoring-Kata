@@ -1,9 +1,9 @@
 import com.kata.yatzy.YatzyRuleUtils;
 import com.kata.yatzy.model.DiceRoll;
 import com.kata.yatzy.model.YatzyRuleEnum;
-import org.junit.*;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class YatzyRuleUtilsTest {
 
@@ -104,6 +104,7 @@ public class YatzyRuleUtilsTest {
         assertEquals(15, YatzyRuleUtils.smallStraight(new DiceRoll(1, 2, 3, 4, 5).dice()));
         assertEquals(15, YatzyRuleUtils.smallStraight(new DiceRoll(2, 3, 4, 5, 1).dice()));
         assertEquals(0, YatzyRuleUtils.smallStraight(new DiceRoll(1, 2, 2, 4, 5).dice()));
+        assertEquals(0, YatzyRuleUtils.smallStraight(new DiceRoll(1, 2, 2, 5, 5).dice()));
     }
 
     @Test
@@ -111,6 +112,7 @@ public class YatzyRuleUtilsTest {
         assertEquals(20, YatzyRuleUtils.largeStraight(new DiceRoll(6, 2, 3, 4, 5).dice()));
         assertEquals(20, YatzyRuleUtils.largeStraight(new DiceRoll(2, 3, 4, 5, 6).dice()));
         assertEquals(0, YatzyRuleUtils.largeStraight(new DiceRoll(1, 2, 2, 4, 5).dice()));
+        assertEquals(0, YatzyRuleUtils.largeStraight(new DiceRoll(2, 2, 5, 5, 6).dice()));
     }
 
     @Test
