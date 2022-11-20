@@ -11,6 +11,7 @@ public class YatzyRuleUtils {
 
     /**
      * Scores the sum of all dice, no matter what they read.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -20,6 +21,7 @@ public class YatzyRuleUtils {
 
     /**
      * If all dice have the same number, it scores 50 points.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -30,8 +32,9 @@ public class YatzyRuleUtils {
 
     /**
      * It scores the sum of the dice that reads one, two, three, four, five or six, respectively.
+     *
      * @param ruleSum type of sided faces
-     * @param dice five six-sided dice
+     * @param dice    five six-sided dice
      * @return scores
      */
     public static int sum(YatzyRuleEnum ruleSum, int... dice) {
@@ -52,6 +55,7 @@ public class YatzyRuleUtils {
 
     /**
      * It scores the sum of the two highest matching dice.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -62,6 +66,7 @@ public class YatzyRuleUtils {
 
     /**
      * If there are two pairs of dice with the same number, it scores the sum of these dice.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -78,6 +83,7 @@ public class YatzyRuleUtils {
 
     /**
      * If there are four dice with the same number, it scores the sum of these dice.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -88,6 +94,7 @@ public class YatzyRuleUtils {
 
     /**
      * If there are three dice with the same number, it scores the sum of these dice.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -98,6 +105,7 @@ public class YatzyRuleUtils {
 
     /**
      * When placed on “small straight”, if the dice read 1,2,3,4,5, it scores 15
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -107,6 +115,7 @@ public class YatzyRuleUtils {
 
     /**
      * When placed on “large straight”, if the dice read 2,3,4,5,6, it scores 20
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -116,6 +125,7 @@ public class YatzyRuleUtils {
 
     /**
      * If the dice are two of a kind and three of a kind, it scores the sum of all the dice.
+     *
      * @param dice five six-sided dice
      * @return scores
      */
@@ -133,6 +143,7 @@ public class YatzyRuleUtils {
 
     /**
      * Calculate the sum of all selected face of dice
+     *
      * @param face the face selected
      * @param dice any number of dice
      * @return sum of selected face of dice
@@ -143,6 +154,7 @@ public class YatzyRuleUtils {
 
     /**
      * Count the number of occurrence for each face of dice
+     *
      * @param dice five six-sided dice
      * @return an array with occurrence for each face of dice
      */
@@ -158,8 +170,9 @@ public class YatzyRuleUtils {
     }
 
     /**
-     *  Find which face matches the number of occurrence
-     * @param counts an array with occurrence for each face of dice
+     * Find which face matches the number of occurrence
+     *
+     * @param counts     an array with occurrence for each face of dice
      * @param occurrence the number of occurrence to find
      * @return the highest repetition face
      */
