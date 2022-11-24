@@ -4,9 +4,59 @@ import com.kata.yatzy.model.YatzyRuleEnum;
 
 import java.util.Arrays;
 
+/**
+ * Utils to score a given roll
+ */
 public class YatzyRuleUtils {
 
     private YatzyRuleUtils() {
+    }
+
+    /**
+     * @param givenCategory the rule to score
+     * @param dice          five six-sided dice
+     * @return score
+     */
+    public static int scoreRoll(YatzyRuleEnum givenCategory, int... dice) {
+        int score = 0;
+        switch (givenCategory) {
+            case ONES:
+            case TWOS:
+            case THREES:
+            case FOURS:
+            case FIVES:
+            case SIXES:
+                score = sum(givenCategory, dice);
+                break;
+            case CHANCE:
+                score = chance(dice);
+                break;
+            case PAIR:
+                score = onePair(dice);
+                break;
+            case TWO_PAIR:
+                score = twoPairs(dice);
+                break;
+            case YATZY:
+                score = yatzy(dice);
+                break;
+            case THREE_OF_KIND:
+                score = threeOfAKind(dice);
+                break;
+            case FOUR_OF_KIND:
+                score = fourOfAKind(dice);
+                break;
+            case SMALL_STRAIGHT:
+                score = smallStraight(dice);
+                break;
+            case LARGE_STRAIGHT:
+                score = largeStraight(dice);
+                break;
+            case FULL_HOUSE:
+                score = fullHouse(dice);
+                break;
+        }
+        return score;
     }
 
     /**
@@ -33,13 +83,13 @@ public class YatzyRuleUtils {
     /**
      * It scores the sum of the dice that reads one, two, three, four, five or six, respectively.
      *
-     * @param ruleSum type of sided faces
-     * @param dice    five six-sided dice
+     * @param categorySum type of sided faces
+     * @param dice        five six-sided dice
      * @return scores
      */
-    public static int sum(YatzyRuleEnum ruleSum, int... dice) {
+    public static int sum(YatzyRuleEnum categorySum, int... dice) {
         int sum = 0;
-        switch (ruleSum) {
+        switch (categorySum) {
             case ONES -> sum = sumOfDice(1, dice);
             case TWOS -> sum = sumOfDice(2, dice);
             case THREES -> sum = sumOfDice(3, dice);

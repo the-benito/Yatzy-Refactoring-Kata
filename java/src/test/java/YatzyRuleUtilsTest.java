@@ -90,13 +90,13 @@ public class YatzyRuleUtilsTest {
         assertEquals(9, YatzyRuleUtils.threeOfAKind(new DiceRoll(3, 3, 3, 4, 5).dice()));
         assertEquals(15, YatzyRuleUtils.threeOfAKind(new DiceRoll(5, 3, 5, 4, 5).dice()));
         assertEquals(9, YatzyRuleUtils.threeOfAKind(new DiceRoll(3, 3, 3, 3, 5).dice()));
+        assertEquals(9, YatzyRuleUtils.threeOfAKind(new DiceRoll(3, 3, 3, 3, 3).dice()));
     }
 
     @Test
     public void four_of_a_kind_should_scores_sum() {
         assertEquals(12, YatzyRuleUtils.fourOfAKind(new DiceRoll(3, 3, 3, 3, 5).dice()));
         assertEquals(20, YatzyRuleUtils.fourOfAKind(new DiceRoll(5, 5, 5, 4, 5).dice()));
-        assertEquals(9, YatzyRuleUtils.threeOfAKind(new DiceRoll(3, 3, 3, 3, 3).dice()));
     }
 
     @Test
@@ -119,5 +119,12 @@ public class YatzyRuleUtilsTest {
     public void full_house_should_scores_sum() {
         assertEquals(18, YatzyRuleUtils.fullHouse(new DiceRoll(6, 2, 2, 2, 6).dice()));
         assertEquals(0, YatzyRuleUtils.fullHouse(new DiceRoll(2, 3, 4, 5, 6).dice()));
+    }
+
+    @Test
+    public void when_given_category_should_score() {
+        assertEquals(20, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.LARGE_STRAIGHT, new DiceRoll(6, 2, 3, 4, 5).dice()));
+        assertEquals(18, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.FULL_HOUSE, new DiceRoll(6, 2, 2, 2, 6).dice()));
+        assertEquals(0, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.PAIR, new DiceRoll(5, 4, 3, 2, 1).dice()));
     }
 }
