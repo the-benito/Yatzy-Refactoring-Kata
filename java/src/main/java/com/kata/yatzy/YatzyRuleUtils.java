@@ -41,19 +41,15 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int sum(YatzyRuleEnum categorySum, int... dice) {
-        int sum;
-        switch (categorySum) {
-            case ONES -> sum = sumOfDice(1, dice);
-            case TWOS -> sum = sumOfDice(2, dice);
-            case THREES -> sum = sumOfDice(3, dice);
-            case FOURS -> sum = sumOfDice(4, dice);
-            case FIVES -> sum = sumOfDice(5, dice);
-            case SIXES -> sum = sumOfDice(6, dice);
-            default -> {
-                return 0;
-            }
-        }
-        return sum;
+        return switch (categorySum) {
+            case ONES -> sumOfDice(1, dice);
+            case TWOS -> sumOfDice(2, dice);
+            case THREES -> sumOfDice(3, dice);
+            case FOURS -> sumOfDice(4, dice);
+            case FIVES -> sumOfDice(5, dice);
+            case SIXES -> sumOfDice(6, dice);
+            default -> 0;
+        };
     }
 
     /**
