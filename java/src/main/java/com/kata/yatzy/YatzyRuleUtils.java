@@ -2,7 +2,7 @@ package com.kata.yatzy;
 
 import com.kata.yatzy.model.YatzyRuleEnum;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Utils to score a given roll
@@ -10,53 +10,6 @@ import java.util.Arrays;
 public class YatzyRuleUtils {
 
     private YatzyRuleUtils() {
-    }
-
-    /**
-     * @param givenCategory the rule to score
-     * @param dice          five six-sided dice
-     * @return score
-     */
-    public static int scoreRoll(YatzyRuleEnum givenCategory, int... dice) {
-        int score = 0;
-        switch (givenCategory) {
-            case ONES:
-            case TWOS:
-            case THREES:
-            case FOURS:
-            case FIVES:
-            case SIXES:
-                score = sum(givenCategory, dice);
-                break;
-            case CHANCE:
-                score = chance(dice);
-                break;
-            case PAIR:
-                score = onePair(dice);
-                break;
-            case TWO_PAIR:
-                score = twoPairs(dice);
-                break;
-            case YATZY:
-                score = yatzy(dice);
-                break;
-            case THREE_OF_KIND:
-                score = threeOfAKind(dice);
-                break;
-            case FOUR_OF_KIND:
-                score = fourOfAKind(dice);
-                break;
-            case SMALL_STRAIGHT:
-                score = smallStraight(dice);
-                break;
-            case LARGE_STRAIGHT:
-                score = largeStraight(dice);
-                break;
-            case FULL_HOUSE:
-                score = fullHouse(dice);
-                break;
-        }
-        return score;
     }
 
     /**
@@ -76,8 +29,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int yatzy(int... dice) {
-        int[] counts = getCounts(dice);
-        return getSumOfSameDice(counts, 5) != 0 ? 50 : 0;
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return getSumOfDiceWithSameOccurence(counts, 5) != 0 ? 50 : 0;
     }
 
     /**
@@ -88,7 +41,7 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int sum(YatzyRuleEnum categorySum, int... dice) {
-        int sum = 0;
+        int sum;
         switch (categorySum) {
             case ONES -> sum = sumOfDice(1, dice);
             case TWOS -> sum = sumOfDice(2, dice);
@@ -110,8 +63,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int onePair(int... dice) {
-        int[] counts = getCounts(dice);
-        return getSumOfSameDice(counts, 2);
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return getSumOfDiceWithSameOccurence(counts, 2);
     }
 
     /**
@@ -121,11 +74,11 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int twoPairs(int... dice) {
-        int[] counts = getCounts(dice);
-        int resultOnePair = getSumOfSameDice(counts, 2);
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        int resultOnePair = getSumOfDiceWithSameOccurence(counts, 2);
         if (resultOnePair != 0) {
-            counts[(resultOnePair / 2) - 1] = 0;
-            int resultTwoPair = getSumOfSameDice(counts, 2);
+            counts.remove(resultOnePair / 2);
+            int resultTwoPair = getSumOfDiceWithSameOccurence(counts, 2);
             return resultTwoPair != 0 ? resultOnePair + resultTwoPair : 0;
         }
         return 0;
@@ -138,8 +91,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int fourOfAKind(int... dice) {
-        int[] counts = getCounts(dice);
-        return getSumOfSameDice(counts, 4);
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return getSumOfDiceWithSameOccurence(counts, 4);
     }
 
     /**
@@ -149,8 +102,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int threeOfAKind(int... dice) {
-        int[] counts = getCounts(dice);
-        return getSumOfSameDice(counts, 3);
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return getSumOfDiceWithSameOccurence(counts, 3);
     }
 
     /**
@@ -160,8 +113,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int smallStraight(int... dice) {
-        int[] counts = getCounts(dice);
-        return hasTheSameOccurrence(0, counts) ? 15 : 0;
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return hasTheSameOccurrenceWithoutIndexStartFace(0, counts) ? 15 : 0;
     }
 
     /**
@@ -171,8 +124,8 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int largeStraight(int... dice) {
-        int[] counts = getCounts(dice);
-        return hasTheSameOccurrence(1, counts) ? 20 : 0;
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        return hasTheSameOccurrenceWithoutIndexStartFace(1, counts) ? 20 : 0;
     }
 
     /**
@@ -182,11 +135,11 @@ public class YatzyRuleUtils {
      * @return scores
      */
     public static int fullHouse(int... dice) {
-        int[] counts = getCounts(dice);
-        if (getSumOfSameDice(counts, 5) == 0) {
-            int sumOfThreeSameDice = getSumOfSameDice(counts, 3);
+        Map<Integer, Integer> counts = getCountsOfDices(dice);
+        if (getSumOfDiceWithSameOccurence(counts, 5) == 0) {
+            int sumOfThreeSameDice = getSumOfDiceWithSameOccurence(counts, 3);
             if (sumOfThreeSameDice != 0) {
-                int sumOfTwoSameDice = getSumOfSameDice(counts, 2);
+                int sumOfTwoSameDice = getSumOfDiceWithSameOccurence(counts, 2);
                 return sumOfTwoSameDice != 0 ? sumOfTwoSameDice + sumOfThreeSameDice : 0;
             }
         }
@@ -205,52 +158,40 @@ public class YatzyRuleUtils {
     }
 
     /**
-     * Count the number of occurrence for each face of dice
+     * Count the number of occurence for rolling dice
      *
-     * @param dice many six-sided dice
-     * @return an array with occurrence for each face of dice
+     * @param dice any number of dice
+     * @return HashMap with occurrence for each face of dice
      */
-    private static int[] getCounts(int... dice) {
-        int[] counts = new int[6];
+    private static Map<Integer, Integer> getCountsOfDices(int... dice) {
+        Map<Integer, Integer> countsOfDices = new HashMap<>();
         for (int oneDice : dice) {
-            if (oneDice > 6) {
-                throw new IllegalArgumentException("It's not a valid dice");
-            }
-            counts[oneDice - 1]++;
+            countsOfDices.put(oneDice, (countsOfDices.get(oneDice) != null ? countsOfDices.get(oneDice) + 1 : 1));
         }
-        return counts;
+        return countsOfDices;
     }
 
     /**
      * Find which face matches the number of occurrence
      *
-     * @param counts     an array with occurrence for each face of dice
+     * @param counts     HashMap with occurrence for each face of dice
      * @param occurrence the number of occurrence to find
      * @return the highest repetition face
      */
-    private static int getSumOfSameDice(int[] counts, int occurrence) {
-        for (int i = counts.length - 1; i >= 0; i--) {
-            if (counts[i] >= occurrence)
-                return (i + 1) * occurrence;
-        }
-        return 0;
+    private static int getSumOfDiceWithSameOccurence(Map<Integer, Integer> counts, int occurrence) {
+        return occurrence * (counts.entrySet().stream().filter(e -> e.getValue() >= occurrence).map(Map.Entry::getKey).max(Comparator.naturalOrder()).orElse(0));
     }
 
     /**
      * Search if there are 5 consecutive faces of dice
      *
      * @param indexStart index to start the search
-     * @param counts     an array with occurrence for each face of dice
+     * @param counts     HashMap with occurrence for each face of dice
      * @return true if they are 5 consecutive faces of dice
      */
-    private static boolean hasTheSameOccurrence(int indexStart, int[] counts) {
-        int indexEnd = indexStart + 4 > counts.length ? counts.length : indexStart + 4;
-        for (int i = indexStart; i < indexEnd; i++) {
-            if (counts[i] != 1) {
-                return false;
-            }
-        }
-        return true;
+    private static boolean hasTheSameOccurrenceWithoutIndexStartFace(int indexStart, Map<Integer, Integer> counts) {
+        Optional<Map.Entry<Integer, Integer>> maxCounts = counts.entrySet().stream().max(Map.Entry.comparingByValue());
+        return maxCounts.filter(e -> e.getValue() == 1 && counts.get(indexStart) == null).isPresent();
     }
 }
 

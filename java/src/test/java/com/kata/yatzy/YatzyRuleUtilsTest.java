@@ -1,4 +1,5 @@
-import com.kata.yatzy.YatzyRuleUtils;
+package com.kata.yatzy;
+
 import com.kata.yatzy.model.DiceRoll;
 import com.kata.yatzy.model.YatzyRuleEnum;
 import org.junit.Test;
@@ -77,6 +78,8 @@ public class YatzyRuleUtilsTest {
         assertEquals(6, YatzyRuleUtils.onePair(new DiceRoll(3, 4, 3, 5, 6).dice()));
         assertEquals(10, YatzyRuleUtils.onePair(new DiceRoll(5, 3, 3, 3, 5).dice()));
         assertEquals(12, YatzyRuleUtils.onePair(new DiceRoll(5, 3, 6, 6, 5).dice()));
+        assertEquals(8, YatzyRuleUtils.onePair(new DiceRoll(3, 3, 3, 4, 4).dice()));
+        assertEquals(6, YatzyRuleUtils.onePair(new DiceRoll(3, 3, 3, 3, 1).dice()));
     }
 
     @Test
@@ -119,12 +122,5 @@ public class YatzyRuleUtilsTest {
     public void full_house_should_scores_sum() {
         assertEquals(18, YatzyRuleUtils.fullHouse(new DiceRoll(6, 2, 2, 2, 6).dice()));
         assertEquals(0, YatzyRuleUtils.fullHouse(new DiceRoll(2, 3, 4, 5, 6).dice()));
-    }
-
-    @Test
-    public void when_given_category_should_score() {
-        assertEquals(20, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.LARGE_STRAIGHT, new DiceRoll(6, 2, 3, 4, 5).dice()));
-        assertEquals(18, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.FULL_HOUSE, new DiceRoll(6, 2, 2, 2, 6).dice()));
-        assertEquals(0, YatzyRuleUtils.scoreRoll(YatzyRuleEnum.PAIR, new DiceRoll(5, 4, 3, 2, 1).dice()));
     }
 }
